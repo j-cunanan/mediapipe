@@ -41,7 +41,8 @@ encode_binary_proto(
 # `.pngblob` is used instead of `.png` to prevent iOS build from preprocessing the image.
 # OpenCV is unable to read a PNG file preprocessed by the iOS build.
 exports_files([
-    "axis.pngblob",
-    "facepaint.pngblob",
+    "mask.pngblob",
+    "facepaint3.pngblob",
     "glasses.pngblob",
+    "facepaint.pngblob",
 ])

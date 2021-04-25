@@ -59,3 +59,33 @@ mediapipe_simple_subgraph(
         "//mediapipe/modules/face_landmark:face_landmark_front_gpu",
     ],
 )
+
+mediapipe_simple_subgraph(
+    name = "single_face_geometry_from_detection_cpu",
+    graph = "single_face_geometry_from_detection_cpu.pbtxt",
+    register_as = "SingleFaceGeometryFromDetectionCpu",
+    deps = [
+        ":face_landmarks_smoothing",
+        "//mediapipe/calculators/core:concatenate_detection_vector_calculator",
+        "//mediapipe/calculators/core:split_vector_calculator",
+        "//mediapipe/calculators/image:image_properties_calculator",
+        "//mediapipe/modules/face_detection:face_detection_front_cpu",
+        "//mediapipe/modules/face_geometry:face_geometry_from_detection",
+    ],
+)
+
+mediapipe_simple_subgraph(
+    name = "single_face_geometry_from_landmarks_cpu",
+    graph = "single_face_geometry_from_landmarks_cpu.pbtxt",
+    register_as = "SingleFaceGeometryFromLandmarksCpu",
+    deps = [
+        ":face_landmarks_smoothing",
+        "//mediapipe/calculators/core:concatenate_vector_calculator",
+        "//mediapipe/calculators/core:constant_side_packet_calculator",
+        "//mediapipe/calculators/core:split_vector_calculator",
+        "//mediapipe/calculators/image:image_properties_calculator",
+        "//mediapipe/calculators/util:landmarks_smoothing_calculator",
+        "//mediapipe/modules/face_geometry:face_geometry_from_landmarks",
+        "//mediapipe/modules/face_landmark:face_landmark_front_cpu",
+    ],
+)

@@ -35,6 +35,20 @@ cc_library(
         "//mediapipe/modules/face_geometry:env_generator_calculator",
     ],
 )
+cc_library(
+    name = "face_effect_cpu_deps",
+    deps = [
+        "//mediapipe/calculators/core:flow_limiter_calculator",
+        "//mediapipe/calculators/core:gate_calculator",
+        "//mediapipe/calculators/core:immediate_mux_calculator",
+        "//mediapipe/calculators/image:image_properties_calculator",
+        "//mediapipe/framework/tool:switch_container",
+        "//mediapipe/graphs/face_effect/subgraphs:single_face_geometry_from_detection_cpu",
+        "//mediapipe/graphs/face_effect/subgraphs:single_face_geometry_from_landmarks_cpu",
+        "//mediapipe/modules/face_geometry:effect_renderer_calculator",
+        "//mediapipe/modules/face_geometry:env_generator_calculator",
+    ],
+)
 
 mediapipe_binary_graph(
     name = "face_effect_gpu_binary_graph",

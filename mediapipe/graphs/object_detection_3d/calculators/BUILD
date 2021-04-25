@@ -24,6 +24,7 @@ mediapipe_proto_library(
     visibility = ["//visibility:public"],
     deps = [
         "//mediapipe/framework:calculator_proto",
+        "//mediapipe/framework:calculator_options_proto",
     ],
 )
 
@@ -33,6 +34,7 @@ mediapipe_proto_library(
     visibility = ["//visibility:public"],
     deps = [
         "//mediapipe/framework:calculator_proto",
+        "//mediapipe/framework:calculator_options_proto",
     ],
 )
 
@@ -51,6 +53,7 @@ mediapipe_proto_library(
     visibility = ["//visibility:public"],
     deps = [
         "//mediapipe/framework:calculator_proto",
+        "//mediapipe/framework:calculator_options_proto",
         "//mediapipe/util:color_proto",
     ],
 )

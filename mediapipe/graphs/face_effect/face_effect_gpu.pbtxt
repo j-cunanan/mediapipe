@@ -102,8 +102,8 @@ node {
         calculator: "FaceGeometryEffectRendererCalculator"
         node_options: {
           [type.googleapis.com/mediapipe.FaceGeometryEffectRendererCalculatorOptions] {
-            effect_texture_path: "mediapipe/graphs/face_effect/data/axis.pngblob"
-            effect_mesh_3d_path: "mediapipe/graphs/face_effect/data/axis.binarypb"
+            effect_texture_path: "mediapipe/graphs/face_effect/data/facepaint.pngblob"
+
           }
         }
       }
@@ -111,7 +111,7 @@ node {
         calculator: "FaceGeometryEffectRendererCalculator"
         node_options: {
           [type.googleapis.com/mediapipe.FaceGeometryEffectRendererCalculatorOptions] {
-            effect_texture_path: "mediapipe/graphs/face_effect/data/facepaint.pngblob"
+            effect_texture_path: "mediapipe/graphs/face_effect/data/mask.pngblob"
           }
         }
       }

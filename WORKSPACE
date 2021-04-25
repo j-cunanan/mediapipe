@@ -245,10 +245,13 @@ http_archive(
 # You may run setup_android.sh to install Android SDK and NDK.
 android_ndk_repository(
     name = "androidndk",
+      path = "/Users/jaysoncunanan/Android/Sdk/ndk-bundle/android-ndk-r18b",
+      api_level = 21,
 )
 
 android_sdk_repository(
     name = "androidsdk",
+      path = "/Users/jaysoncunanan/Android/Sdk",
 )
 
 # iOS basic build deps.
@@ -333,6 +336,8 @@ maven_install(
         "androidx.constraintlayout:constraintlayout:aar:1.1.3",
         "androidx.core:core:aar:1.1.0-rc03",
         "androidx.legacy:legacy-support-v4:aar:1.0.0",
+        "androidx.navigation:navigation-fragment:2.3.5",
+        "androidx.navigation:navigation-ui:2.3.5",
         "androidx.recyclerview:recyclerview:aar:1.1.0-beta02",
         "androidx.test.espresso:espresso-core:3.1.1",
         "com.github.bumptech.glide:glide:4.11.0",

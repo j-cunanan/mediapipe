@@ -36,9 +36,9 @@ android_binary(
     name = "faceeffect",
     srcs = glob(["*.java"]),
     assets = [
-        "//mediapipe/graphs/face_effect/data:axis.binarypb",
-        "//mediapipe/graphs/face_effect/data:axis.pngblob",
+        "//mediapipe/graphs/face_effect/data:mask.pngblob",
         "//mediapipe/graphs/face_effect/data:facepaint.pngblob",
+        "//mediapipe/graphs/face_effect/data:facepaint3.pngblob",
         "//mediapipe/graphs/face_effect/data:glasses.binarypb",
         "//mediapipe/graphs/face_effect/data:glasses.pngblob",
         "//mediapipe/graphs/face_effect:face_effect_gpu.binarypb",
