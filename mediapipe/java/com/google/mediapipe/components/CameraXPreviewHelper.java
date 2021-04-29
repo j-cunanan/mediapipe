@@ -338,6 +338,8 @@ public class CameraXPreviewHelper extends CameraHelper {
     return frameSize;
   }
 
+  public int getFrameRotation() { return frameRotation; }
+
   private void onInitialFrameReceived(Context context, SurfaceTexture previewFrameTexture) {
     // This method is called by the onFrameAvailableListener we install when opening the camera
     // session, the first time we receive a frame. In this method, we remove our callback,

@@ -7,6 +7,7 @@ import android.Manifest;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.SurfaceTexture;
+import android.media.MediaRecorder;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -59,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton mbtnRecordVideo;
     private boolean isRecording = false;
 
+    private MediaRecorder mMediaRecorder;
     private File mVideoFolder;
     private String mVideoFileName;
 
@@ -102,6 +104,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         createVideoFolder();
+
+        mMediaRecorder = new MediaRecorder();
+
         try {
             applicationInfo =
                     getPackageManager().getApplicationInfo(getPackageName(), PackageManager.GET_META_DATA);
@@ -346,5 +351,17 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+    }
+
+    private void setupMediaRecorder() throws IOException {
+        mMediaRecorder.setVideoSource(MediaRecorder.VideoSource.SURFACE);
+        mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
+        mMediaRecorder.setOutputFile(mVideoFileName);
+        mMediaRecorder.setVideoEncodingBitRate(1000000);
+        mMediaRecorder.setVideoFrameRate(30);
+        mMediaRecorder.setVideoSize(cameraHelper.getFrameSize().getWidth(), cameraHelper.getFrameSize().getHeight());
+        mMediaRecorder.setOrientationHint(cameraHelper.getFrameRotation());
+        mMediaRecorder.setAudioEncoder(MediaRecorder.VideoEncoder.H264);
+        mMediaRecorder.prepare();
     }
 }
