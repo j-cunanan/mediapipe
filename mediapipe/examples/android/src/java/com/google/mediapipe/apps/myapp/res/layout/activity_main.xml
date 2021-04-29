@@ -26,7 +26,7 @@
         android:padding="@dimen/double_margin"
         android:src="@drawable/ic_take_picture"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btnRecordVideo"
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="ContentDescription" />
 
@@ -36,7 +36,7 @@
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
         android:padding="@dimen/double_margin"
-        android:src="@drawable/ic_take_video"
+        android:src="@drawable/ic_take_picture"
         app:backgroundTint="@android:color/transparent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -49,10 +49,9 @@
         android:background="@android:color/transparent"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_no_picture"
-        app:layout_constraintBottom_toBottomOf="@id/btnTakePicture"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/btnTakePicture"
-        app:layout_constraintTop_toTopOf="@id/btnTakePicture"
+        app:layout_constraintBottom_toBottomOf="@id/btnSwitchCamera"
+        app:layout_constraintStart_toEndOf="@id/btnSwitchCamera"
+        app:layout_constraintTop_toTopOf="@id/btnSwitchCamera"
         tools:ignore="ContentDescription" />
 
     <ImageButton
@@ -63,9 +62,8 @@
         android:padding="@dimen/half_margin"
         android:scaleType="centerInside"
         android:src="@drawable/ic_outline_camera_front"
-        app:layout_constraintBottom_toBottomOf="@id/btnTakePicture"
-        app:layout_constraintEnd_toStartOf="@id/btnTakePicture"
+        app:layout_constraintEnd_toStartOf="@id/btnGallery"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/btnTakePicture"
+        app:layout_constraintTop_toTopOf="parent"
         tools:ignore="ContentDescription" />
 </androidx.constraintlayout.widget.ConstraintLayout>

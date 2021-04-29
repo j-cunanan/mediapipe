@@ -1,10 +1,15 @@
 package com.google.mediapipe.apps.myapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+
+import android.Manifest;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.SurfaceTexture;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.util.Size;
 import android.view.SurfaceHolder;
@@ -12,6 +17,7 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.google.mediapipe.framework.AndroidAssetUtil;
 import com.google.mediapipe.components.FrameProcessor;
@@ -21,10 +27,16 @@ import com.google.mediapipe.components.PermissionHelper;
 import com.google.mediapipe.components.ExternalTextureConverter;
 import com.google.mediapipe.glutil.EglManager;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 
 /** Bare-bones main activity. */
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
+    private static final int REQUEST_WRITE_EXTERNAL_STORAGE_PERMISSION_RESULT = 1;
 
     // Flips the camera-preview frames vertically by default, before sending them into FrameProcessor
     // to be processed in a MediaPipe graph, and flips the processed frames back when they are
@@ -44,8 +56,12 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton btnTakePicture;
     private ImageButton btnSwitchCamera;
     private ImageButton btnGallery;
-    private ImageButton btnRecordVideo;
-    private boolean Isrecording = false;
+    private ImageButton mbtnRecordVideo;
+    private boolean isRecording = false;
+
+    private File mVideoFolder;
+    private String mVideoFileName;
+
 
     static {
         // Load all native libraries needed by the app.
@@ -85,12 +101,26 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        createVideoFolder();
         try {
             applicationInfo =
                     getPackageManager().getApplicationInfo(getPackageName(), PackageManager.GET_META_DATA);
         } catch (PackageManager.NameNotFoundException e) {
             Log.e(TAG, "Cannot find application info: " + e);
         }
+
+        mbtnRecordVideo = findViewById(R.id.btnRecordVideo);
+        mbtnRecordVideo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isRecording) {
+                    isRecording = false;
+                    mbtnRecordVideo.setImageResource(R.drawable.ic_take_video);
+                } else {
+                    checkWriteStoragePermission();
+                }
+            }
+        });
 
         previewDisplayView = new SurfaceView(this);
         setupPreviewDisplayView();
@@ -129,6 +159,20 @@ public class MainActivity extends AppCompatActivity {
             int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         PermissionHelper.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_WRITE_EXTERNAL_STORAGE_PERMISSION_RESULT) {
+            if(grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                try {
+                    createVideoFileName();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                Toast.makeText(this,
+                        "You can now save your videos", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this,
+                        "App needs to save videos", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     @Override
@@ -260,4 +304,47 @@ public class MainActivity extends AppCompatActivity {
                         });
     }
 
+    private void createVideoFolder() {
+        File movieFile = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES);
+        mVideoFolder = new File(movieFile, "AnonymizeMe Videos");
+        if (! mVideoFolder.exists()) {
+            mVideoFolder.mkdirs();
+        }
+    }
+
+    private File createVideoFileName() throws IOException {
+        String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format( new Date());
+        String prepend = "VIDEO_" + timestamp + "_";
+        File videoFile= File.createTempFile(prepend, ".mp4", mVideoFolder);
+        mVideoFileName = videoFile.getAbsolutePath();
+        return videoFile;
+    }
+
+    private void checkWriteStoragePermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            == PackageManager.PERMISSION_GRANTED) {
+                isRecording = true;
+                mbtnRecordVideo.setImageResource(R.drawable.ic_take_picture);
+                try {
+                    createVideoFileName();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                if (shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                    Toast.makeText(this, "app needs to save videos", Toast.LENGTH_SHORT).show();
+                }
+                requestPermissions(new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_WRITE_EXTERNAL_STORAGE_PERMISSION_RESULT);
+            }
+        } else {
+            isRecording = true;
+            mbtnRecordVideo.setImageResource(R.drawable.ic_take_picture);
+            try {
+                createVideoFileName();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }
