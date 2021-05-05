@@ -11,6 +11,8 @@ import android.media.MediaRecorder;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.util.Size;
 import android.view.SurfaceHolder;
@@ -18,8 +20,10 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.mediapipe.components.CircularEncoder;
 import com.google.mediapipe.framework.AndroidAssetUtil;
 import com.google.mediapipe.components.FrameProcessor;
 import com.google.mediapipe.components.CameraXPreviewHelper;
@@ -30,6 +34,7 @@ import com.google.mediapipe.glutil.EglManager;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -98,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
 
     private CameraHelper.CameraFacing cameraFacing = CameraHelper.CameraFacing.FRONT;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -149,14 +155,6 @@ public class MainActivity extends AppCompatActivity {
                         applicationInfo.metaData.getBoolean("flipFramesVertically", FLIP_FRAMES_VERTICALLY));
 
 
-
-
-        if (PermissionHelper.cameraPermissionsGranted(this)) {
-            startCamera(cameraFacing);
-        } else {
-            PermissionHelper.checkAndRequestCameraPermissions(this);
-        }
-
     }
 
     @Override
@@ -191,7 +189,11 @@ public class MainActivity extends AppCompatActivity {
                 applicationInfo.metaData.getBoolean("flipFramesVertically", FLIP_FRAMES_VERTICALLY));
         converter.setConsumer(processor);
 
-        startCamera(cameraFacing);
+        if (PermissionHelper.cameraPermissionsGranted(this)) {
+            startCamera(cameraFacing);
+        } else {
+            PermissionHelper.checkAndRequestCameraPermissions(this);
+        }
     }
 
 

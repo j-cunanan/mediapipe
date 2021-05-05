@@ -145,7 +145,7 @@ node {
   output_stream: "IMAGE:output_video"
   node_options: {
     [type.googleapis.com/mediapipe.RecolorCalculatorOptions] {
-      color { r: 0 g: 0 b: 255 }
+      color { r: 241 g: 204 b: 143}
       mask_channel: RED
     }
   }
